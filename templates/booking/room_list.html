@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+ {% block title %}Available Rooms - Hotel Booking
+ {%endblock %} 
+ {% block content %}
+<div class="container">
+  <h1 class="mb-4 text-center"><i class="fas fa-bed"></i> Available Rooms</h1>
+
+  <!-- Search Form -->
+  <div class="card mb-4">
+    <div class="card-body">
+      <h5 class="card-title">Search Rooms</h5>
+      <form method="get" class="row g-3">
+        <div class="col-md-4">
+          <label for="{{ form.room_type.id_for_label }}" class="form-label"
+            >Room Type</label
+          >
+          {{ form.room_type }}
+        </div>
+        <div class="col-md-4">
+          <label for="{{ form.location.id_for_label }}" class="form-label"
+            >Location</label
+          >
+          {{ form.location }}
+        </div>
+        <div class="col-md-4">
+          <label for="{{ form.max_price.id_for_label }}" class="form-label"
+            >Max Price per Night</label
+          >
+          {{ form.max_price }}
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary">
+            <i class="fas fa-search"></i> Search
+          </button>
+          <a href="{% url 'booking:room_list' %}" class="btn btn-secondary">
+            <i class="fas fa-redo"></i> Clear
+          </a>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Room List -->
+  <div class="row">
+    {% if rooms %} {% for room in rooms %}
+    <div class="col-md-6 col-lg-4 mb-4">
+      <div class="card h-100">
+        <div class="card-body">
+          <h5 class="card-title">
+            <i class="fas fa-door-open"></i> Room {{ room.room_number }}
+          </h5>
+          <h6 class="card-subtitle mb-2 text-muted">
+            {{ room.get_room_type_display }}
+          </h6>
+          <p class="card-text">
+            <i class="fas fa-map-marker-alt text-primary"></i> {{ room.location }}<br />
+            <i class="fas fa-users text-primary"></i> Capacity: {{ room.capacity }} guests<br />
+            <i class="fas fa-dollar-sign text-success"></i>
+            <strong>${{ room.price_per_night }}</strong> per night
+          </p>
+          {% if room.description %}
+          <p class="card-text small">{{ room.description|truncatewords:20 }}</p>
+          {% endif %}
+          <div class="d-flex justify-content-between align-items-center">
+            <a
+              href="{% url 'booking:room_detail' room.id %}"
+              class="btn btn-outline-primary btn-sm"
+            >
+              <i class="fas fa-info-circle"></i> Details
+            </a>
+            <a
+              href="{% url 'booking:book_room' room.id %}"
+              class="btn btn-primary btn-sm"
+            >
+              <i class="fas fa-calendar-check"></i> Book Now
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %} {% else %}
+    <div class="col-12">
+      <div class="alert alert-info text-center">
+        <i class="fas fa-info-circle"></i> No rooms available matching your
+        criteria.
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
