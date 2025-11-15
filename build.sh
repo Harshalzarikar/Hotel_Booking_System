@@ -2,14 +2,14 @@
 # exit on error
 set -o errexit
 
-echo "Installing dependencies..."
+echo "Installing Python dependencies..."
 pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 
 echo "Collecting static files..."
-python manage.py collectstatic --no-input --clear
+python manage.py collectstatic --noinput --clear
 
-echo "Running migrations..."
+echo "Running database migrations..."
 python manage.py migrate
 
 echo "Build completed successfully!"
