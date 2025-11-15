@@ -1,20 +1,12 @@
-databases:
-  - name: hotel_booking_project
-    databaseName: hotel_booking_project
-    user: hotel_booking_project
-
 services:
   - type: web
-    name: hotel-booking-project
+    name: hotel-booking-system
     runtime: python
-    buildCommand: "./build.sh"
-    startCommand: "python manage.py migrate && gunicorn hotel_booking_project.wsgi:application"
+    plan: free
+    buildCommand: "pip install --upgrade pip && pip install -r requirements.txt && python manage.py collectstatic --noinput"
+    startCommand: "gunicorn hotel_booking_project.wsgi:application --bind 0.0.0.0:$PORT --workers 3"
     envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: hotel_booking_project
-          property: connectionString
-      - key: SECRET_KEY
-        generateValue: true
-      - key: WEB_CONCURRENCY
-        value: 4
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DEBUG
+        value: "False"
