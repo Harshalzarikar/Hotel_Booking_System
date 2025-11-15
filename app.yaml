@@ -1,0 +1,15 @@
+runtime: python311  # Python 3.11 works; App Engine doesn't officially support 3.13 yet
+
+entrypoint: gunicorn -b :$PORT hotel_booking_project.wsgi
+
+env_variables:
+  DJANGO_SETTINGS_MODULE: "hotel_booking_project.settings"
+  SECRET_KEY: "replace-with-your-secret-key"
+  DEBUG: "False"
+
+handlers:
+  - url: /static
+    static_dir: static/
+
+  - url: /.*
+    script: auto

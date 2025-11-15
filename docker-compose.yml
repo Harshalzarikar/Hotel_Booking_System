@@ -1,0 +1,12 @@
+services:
+  web:
+    build: .
+    command: gunicorn hotel_booking_project.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DEBUG=False
+      - SECRET_KEY=django-insecure-md#f%0!(7#zeace@w0_y17pk=7jj3$1dmb@wpgl6huey&mf*##
+      - ALLOWED_HOSTS=localhost,127.0.0.1
